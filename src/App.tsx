@@ -1,7 +1,7 @@
-import * as React from 'react';
+// import * as React from 'react';
+import React, { useState } from 'react';
 import 'bulma/css/bulma.css';
 import './App.scss';
-
 
 export const goodsFromServer: string[] = [
   'Dumplings',
@@ -25,12 +25,11 @@ enum SortType {
   Reverse = 'REVERSE',
 }
 
-
 export const App: React.FC = () => {
   const [sortGoods, setGoods] = useState<Good[]>([...goodsFromServer]);
   const [active, setActive] = useState<SortType>(SortType.None);
 
-  const sortAlphabetically  = () => {
+  const sortAlphabetically = () => {
     setGoods([...sortGoods].sort((a, b) => a.localeCompare(b)));
     setActive(SortType.Alphabetically);
   };
@@ -40,7 +39,7 @@ export const App: React.FC = () => {
     setActive(SortType.ByLength);
   };
 
-  const reverseGoods  = () => {
+  const reverseGoods = () => {
     setGoods([...sortGoods].reverse());
     setActive(SortType.Reverse);
   };
@@ -56,7 +55,7 @@ export const App: React.FC = () => {
         <button
           type="button"
           onClick={sortAlphabetically}
-          className={`button is-info ${active === 'Sort alphabetically' ? '' : 'is-light'}`}
+          className={`button is-info ${active === SortType.Alphabetically ? '' : 'is-light'}`}
         >
           Sort alphabetically
         </button>
@@ -64,7 +63,7 @@ export const App: React.FC = () => {
         <button
           type="button"
           onClick={sortByLength}
-          className={`button is-success ${active === 'Sort by length' ? '' : 'is-light'}`}
+          className={`button is-success ${active === SortType.ByLength ? '' : 'is-light'}`}
         >
           Sort by length
         </button>
@@ -72,7 +71,7 @@ export const App: React.FC = () => {
         <button
           type="button"
           onClick={reverseGoods}
-          className={`button is-warning ${active === 'Reverse' ? '' : 'is-light'}`}
+          className={`button is-warning ${active === SortType.Reverse ? '' : 'is-light'}`}
         >
           Reverse
         </button>
@@ -80,7 +79,7 @@ export const App: React.FC = () => {
         <button
           type="button"
           onClick={reset}
-          className="button is-danger is-light"
+          className={`button is-danger ${active === SortType.None ? 'is-active' : 'is-light'}`}
         >
           Reset
         </button>
@@ -89,11 +88,10 @@ export const App: React.FC = () => {
       <ul>
         {sortGoods.map(good => (
           <li key={good} data-cy="Good">
-            {good.name}
+            {good}
           </li>
         ))}
       </ul>
     </div>
   );
 };
-
